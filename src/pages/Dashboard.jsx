@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import Sidebar from '../components/Sidebar';
-import DashboardPanel from '../components/DashboardPanel';
-import DataEntryPanel from '../components/DataEntryPanel';
+import EnhancedDashboardPanel from '../components/EnhancedDashboardPanel';
+import DataEntryDashboard from '../components/DataEntryDashboard';
+import PDFReportGenerator from '../components/PDFReportGenerator';
 import ReportsPanel from '../components/ReportsPanel';
+import CompanyProfile from './CompanyProfile';
 import { LogOut } from 'lucide-react';
 
 function Dashboard({ onLogout }) {
@@ -11,13 +13,15 @@ function Dashboard({ onLogout }) {
   const renderPanel = () => {
     switch(activePanel) {
       case 'dashboard':
-        return <DashboardPanel />;
+        return <EnhancedDashboardPanel />;
+      case 'company-profile':
+        return <CompanyProfile />;
       case 'data-entry':
-        return <DataEntryPanel />;
+        return <DataEntryDashboard />;
       case 'reports':
-        return <ReportsPanel />;
+        return <PDFReportGenerator />;
       default:
-        return <DashboardPanel />;
+        return <EnhancedDashboardPanel />;
     }
   };
 

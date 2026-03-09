@@ -25,7 +25,7 @@ function ReportsPanel() {
           <h2 className="text-xl font-semibold text-gray-800">Report for April 202X</h2>
         </div>
 
-        <div className="bg-gradient-to-r from-green-400 to-green-600 rounded-xl p-6 text-white relative overflow-hidden mb-6">
+        <div className="bg-linear-to-r from-green-400 to-green-600 rounded-xl p-6 text-white relative overflow-hidden mb-6">
           <div className="relative z-10">
             <div className="flex items-center justify-between">
               <div>
@@ -74,7 +74,7 @@ function ReportsPanel() {
             <ul className="space-y-2">
               {recommendations.map((rec, index) => (
                 <li key={index} className="flex items-start space-x-2">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 flex-shrink-0"></div>
+                  <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 shrink-0"></div>
                   <span className="text-gray-700">{rec}</span>
                 </li>
               ))}

@@ -31,7 +31,7 @@ function DashboardPanel() {
         <p className="text-gray-600 mt-2">Your Monthly Carbon Footprint</p>
       </div>
 
-      <div className="bg-gradient-to-r from-green-400 to-green-600 rounded-xl p-6 text-white relative overflow-hidden">
+      <div className="bg-linear-to-r from-green-400 to-green-600 rounded-xl p-6 text-white relative overflow-hidden">
         <div className="relative z-10">
           <div className="flex items-center justify-between">
             <div>

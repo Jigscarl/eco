@@ -1,8 +1,9 @@
-import { Leaf, Home, FileText, Database } from 'lucide-react';
+import { Leaf, Home, FileText, Database, Building } from 'lucide-react';
 
 function Sidebar({ activePanel, setActivePanel }) {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home },
+    { id: 'company-profile', label: 'Company Profile', icon: Building },
     { id: 'data-entry', label: 'Data Entry', icon: Database },
     { id: 'reports', label: 'Reports', icon: FileText },
   ];

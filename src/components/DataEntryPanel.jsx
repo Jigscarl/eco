@@ -99,7 +99,7 @@ function DataEntryPanel() {
 
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
         <div className="flex">
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <Zap className="h-5 w-5 text-blue-400" />
           </div>
           <div className="ml-3">
