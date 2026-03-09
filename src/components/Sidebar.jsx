@@ -9,7 +9,7 @@ function Sidebar({ activePanel, setActivePanel }) {
   ];
 
   return (
-    <div className="w-64 bg-white shadow-lg">
+    <div className="w-64 bg-white shadow-lg h-full">
       <div className="p-6">
         <div className="flex items-center space-x-2">
           <Leaf className="w-8 h-8 text-green-600" />
