@@ -148,7 +148,7 @@ function PaymentModal({ isOpen, onClose, feature, onPaymentSuccess }) {
                     <Icon className={`w-8 h-8 mx-auto mb-2 text-${plan.color}-600`} />
                     <h3 className="text-xl font-bold text-gray-900">{plan.name}</h3>
                     <div className="mt-2">
-                      <span className="text-3xl font-bold text-gray-900">${plan.price}</span>
+                      <span className="text-3xl font-bold text-gray-900">{plan.price}</span>
                       <span className="text-gray-600">/{plan.period}</span>
                     </div>
                   </div>
