@@ -195,12 +195,9 @@ function PaymentModal({ isOpen, onClose, feature, onPaymentSuccess }) {
         <div className="p-6 border-t border-gray-200 bg-gray-50">
           <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
             <Shield className="w-4 h-4" />
-            <span>Secure payment powered by Stripe</span>
+            <span>Secure payment</span>
             <CreditCard className="w-4 h-4" />
           </div>
-          <p className="text-center text-xs text-gray-500 mt-2">
-            Cancel anytime. 30-day money-back guarantee.
-          </p>
         </div>
       </div>
     </div>
