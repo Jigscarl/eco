@@ -9,7 +9,7 @@ function PaymentModal({ isOpen, onClose, feature, onPaymentSuccess }) {
     {
       id: 'basic',
       name: 'Basic',
-      price: 9.99,
+      price: 'Ksh 1,200',
       period: 'month',
       features: [
         'PDF Reports (5 per month)',
@@ -24,7 +24,7 @@ function PaymentModal({ isOpen, onClose, feature, onPaymentSuccess }) {
     {
       id: 'pro',
       name: 'Pro',
-      price: 19.99,
+      price: 'Ksh 2,400',
       period: 'month',
       features: [
         'Unlimited PDF Reports',
@@ -41,7 +41,7 @@ function PaymentModal({ isOpen, onClose, feature, onPaymentSuccess }) {
     {
       id: 'enterprise',
       name: 'Enterprise',
-      price: 49.99,
+      price: 'Ksh 6,000',
       period: 'month',
       features: [
         'Everything in Pro',
