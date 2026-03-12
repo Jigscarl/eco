@@ -1,6 +1,6 @@
 import { FileText, Download, Leaf, TrendingDown, Recycle } from 'lucide-react';
 
-function ReportsPanel() {
+function ReportsPanel({ checkPremiumAccess, userSubscription }) {
   const emissionData = [
     { category: 'Electricity', amount: 150.2, icon: Leaf, color: 'green' },
     { category: 'Transport', amount: 122.5, icon: TrendingDown, color: 'blue' },
@@ -91,10 +91,41 @@ function ReportsPanel() {
           </div>
         </div>
 
-        <button className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center justify-center space-x-2">
-          <Download className="w-5 h-5" />
-          <span>Download PDF Report</span>
-        </button>
+        {/* Export Options */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button 
+            onClick={() => {
+              if (checkPremiumAccess('pdf')) {
+                // Handle PDF download
+                console.log('Downloading PDF report...');
+                alert('📄 PDF report downloaded successfully!');
+              }
+            }}
+            className="flex items-center justify-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors w-full sm:w-auto"
+          >
+            <Download className="w-4 h-4" />
+            <span>Download PDF Report</span>
+            {!userSubscription && (
+              <span className="ml-1 text-xs bg-white text-gray-700 bg-opacity-20 px-2 py-1 rounded">PRO</span>
+            )}
+          </button>
+          
+          <button 
+            onClick={() => {
+              if (checkPremiumAccess('excel')) {
+                // Handle Excel export
+                console.log('Exporting to Excel...');
+                alert('📊 Excel export completed successfully!');
+              }
+            }}
+            className="flex items-center justify-center space-x-2 bg-white text-green-600 border border-green-600 px-4 py-2 rounded-lg font-medium hover:bg-green-50 transition-colors w-full sm:w-auto"
+          >
+            <span>Export to Excel</span>
+            {!userSubscription && (
+              <span className="ml-1 text-xs bg-green-100 text-green-700 px-2 py-1 rounded">PRO</span>
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -150,7 +150,7 @@ function PDFReportGenerator({ checkPremiumAccess, userSubscription }) {
                 <Download className="w-4 h-4" />
                 <span>Generate PDF</span>
                 {!userSubscription && (
-                  <span className="ml-1 text-xs bg-white bg-opacity-20 px-2 py-1 rounded">PRO</span>
+                  <span className="ml-1 text-xs bg-white text-gray-800 bg-opacity-20 px-2 py-1 rounded">PRO</span>
                 )}
               </>
             )}

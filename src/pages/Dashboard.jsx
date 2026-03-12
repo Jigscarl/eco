@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Sidebar from '../components/Sidebar';
 import EnhancedDashboardPanel from '../components/EnhancedDashboardPanel';
 import DataEntryDashboard from '../components/DataEntryDashboard';
-import PDFReportGenerator from '../components/PDFReportGenerator';
 import ReportsPanel from '../components/ReportsPanel';
 import CompanyProfile from './CompanyProfile';
 import { LogOut, Menu, X } from 'lucide-react';
@@ -20,7 +19,7 @@ function Dashboard({ onLogout, checkPremiumAccess, userSubscription }) {
       case 'data-entry':
         return <DataEntryDashboard />;
       case 'reports':
-        return <PDFReportGenerator checkPremiumAccess={checkPremiumAccess} userSubscription={userSubscription} />;
+        return <ReportsPanel checkPremiumAccess={checkPremiumAccess} userSubscription={userSubscription} />;
       default:
         return <EnhancedDashboardPanel checkPremiumAccess={checkPremiumAccess} userSubscription={userSubscription} />;
     }

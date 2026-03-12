@@ -15,7 +15,7 @@ function Landing({ onGetStarted }) {
               onClick={onGetStarted}
               className="bg-green-600 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg font-medium hover:bg-green-700 transition-colors text-sm sm:text-base"
             >
-              Sign In
+              Sign Up / Sign In
             </button>
           </div>
         </div>
