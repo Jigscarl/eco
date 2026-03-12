@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Download, FileText, Calendar, Building, Users, TrendingDown, AlertTriangle, CheckCircle } from 'lucide-react';
 
-function PDFReportGenerator() {
+function PDFReportGenerator({ checkPremiumAccess, userSubscription }) {
   const [selectedMonth, setSelectedMonth] = useState('April 2024');
   const [isGenerating, setIsGenerating] = useState(false);
   const reportIdRef = useState(() => `ECO-${Date.now()}`);
@@ -65,6 +65,10 @@ function PDFReportGenerator() {
   ];
 
   const handleGeneratePDF = () => {
+    if (!checkPremiumAccess('pdf')) {
+      return; // Payment modal will be shown by checkPremiumAccess
+    }
+    
     setIsGenerating(true);
     
     // Simulate PDF generation
@@ -145,6 +149,9 @@ function PDFReportGenerator() {
               <>
                 <Download className="w-4 h-4" />
                 <span>Generate PDF</span>
+                {!userSubscription && (
+                  <span className="ml-1 text-xs bg-white bg-opacity-20 px-2 py-1 rounded">PRO</span>
+                )}
               </>
             )}
           </button>

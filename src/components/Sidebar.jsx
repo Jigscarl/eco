@@ -1,12 +1,20 @@
 import { Leaf, Home, FileText, Database, Building } from 'lucide-react';
 
-function Sidebar({ activePanel, setActivePanel }) {
+function Sidebar({ activePanel, setActivePanel, isMobileMenuOpen, setIsMobileMenuOpen }) {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home },
     { id: 'company-profile', label: 'Company Profile', icon: Building },
     { id: 'data-entry', label: 'Data Entry', icon: Database },
     { id: 'reports', label: 'Reports', icon: FileText },
   ];
+
+  const handleMenuClick = (itemId) => {
+    setActivePanel(itemId);
+    // Close mobile menu after selection
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  };
 
   return (
     <div className="w-64 bg-white shadow-lg h-full">
@@ -23,7 +31,7 @@ function Sidebar({ activePanel, setActivePanel }) {
           return (
             <button
               key={item.id}
-              onClick={() => setActivePanel(item.id)}
+              onClick={() => handleMenuClick(item.id)}
               className={`w-full flex items-center space-x-3 px-6 py-3 text-left transition-colors ${
                 activePanel === item.id
                   ? 'bg-green-50 text-green-600 border-r-4 border-green-600'

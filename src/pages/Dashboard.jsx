@@ -7,22 +7,22 @@ import ReportsPanel from '../components/ReportsPanel';
 import CompanyProfile from './CompanyProfile';
 import { LogOut, Menu, X } from 'lucide-react';
 
-function Dashboard({ onLogout }) {
+function Dashboard({ onLogout, checkPremiumAccess, userSubscription }) {
   const [activePanel, setActivePanel] = useState('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const renderPanel = () => {
     switch(activePanel) {
       case 'dashboard':
-        return <EnhancedDashboardPanel />;
+        return <EnhancedDashboardPanel checkPremiumAccess={checkPremiumAccess} userSubscription={userSubscription} />;
       case 'company-profile':
         return <CompanyProfile />;
       case 'data-entry':
         return <DataEntryDashboard />;
       case 'reports':
-        return <PDFReportGenerator />;
+        return <PDFReportGenerator checkPremiumAccess={checkPremiumAccess} userSubscription={userSubscription} />;
       default:
-        return <EnhancedDashboardPanel />;
+        return <EnhancedDashboardPanel checkPremiumAccess={checkPremiumAccess} userSubscription={userSubscription} />;
     }
   };
 
@@ -38,7 +38,12 @@ function Dashboard({ onLogout }) {
 
       {/* Sidebar - Hidden on mobile, shown on desktop */}
       <div className={`${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:relative lg:block w-64 h-full transition-transform duration-300 ease-in-out z-50 lg:z-auto`}>
-        <Sidebar activePanel={activePanel} setActivePanel={setActivePanel} />
+        <Sidebar 
+          activePanel={activePanel} 
+          setActivePanel={setActivePanel}
+          isMobileMenuOpen={isMobileMenuOpen}
+          setIsMobileMenuOpen={setIsMobileMenuOpen}
+        />
       </div>
 
       {/* Main Content */}
