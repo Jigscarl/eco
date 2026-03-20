@@ -1,5 +1,6 @@
-import { Zap, Fuel, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { Zap, Fuel, Trash2 } from 'lucide-react';
+import { validateDataEntryForm } from '../utils/validation';
 
 function DataEntryPanel() {
   const [formData, setFormData] = useState({
@@ -7,6 +8,8 @@ function DataEntryPanel() {
     fuel: '',
     waste: ''
   });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -14,12 +17,36 @@ function DataEntryPanel() {
       ...prev,
       [name]: value
     }));
+    
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    const validation = validateDataEntryForm(formData);
+    
+    if (!validation.isValid) {
+      setErrors(validation.errors);
+      return;
+    }
+    
+    setIsSubmitting(true);
     console.log('Submitting data:', formData);
-    // Handle form submission here
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      // Handle form submission here
+      alert('Data submitted successfully!');
+      setFormData({ electricity: '', fuel: '', waste: '' });
+    }, 1000);
   };
 
   return (
@@ -45,9 +72,14 @@ function DataEntryPanel() {
                 value={formData.electricity}
                 onChange={handleInputChange}
                 placeholder="Kilowatt Hours (KWH)"
-                className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
+                className={`block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors ${
+                  errors.electricity ? 'border-red-500' : 'border-gray-300'
+                }`}
               />
             </div>
+            {errors.electricity && (
+              <p className="mt-1 text-sm text-red-600">{errors.electricity}</p>
+            )}
           </div>
 
           <div>
@@ -64,9 +96,14 @@ function DataEntryPanel() {
                 value={formData.fuel}
                 onChange={handleInputChange}
                 placeholder="Liters of Fuel"
-                className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
+                className={`block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors ${
+                  errors.fuel ? 'border-red-500' : 'border-gray-300'
+                }`}
               />
             </div>
+            {errors.fuel && (
+              <p className="mt-1 text-sm text-red-600">{errors.fuel}</p>
+            )}
           </div>
 
           <div>
@@ -83,16 +120,22 @@ function DataEntryPanel() {
                 value={formData.waste}
                 onChange={handleInputChange}
                 placeholder="Kilograms of Waste"
-                className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
+                className={`block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors ${
+                  errors.waste ? 'border-red-500' : 'border-gray-300'
+                }`}
               />
             </div>
+            {errors.waste && (
+              <p className="mt-1 text-sm text-red-600">{errors.waste}</p>
+            )}
           </div>
 
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-green-700 transition-colors"
+            disabled={isSubmitting}
+            className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Submit Data
+            {isSubmitting ? 'Submitting...' : 'Submit Data'}
           </button>
         </form>
       </div>

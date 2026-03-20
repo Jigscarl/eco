@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Leaf, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { validateLoginForm } from '../utils/validation';
 
 function LoginPanel() {
   const [formData, setFormData] = useState({
@@ -7,6 +8,8 @@ function LoginPanel() {
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -14,12 +17,34 @@ function LoginPanel() {
       ...prev,
       [name]: value
     }));
+    
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    const validation = validateLoginForm(formData);
+    
+    if (!validation.isValid) {
+      setErrors(validation.errors);
+      return;
+    }
+    
+    setIsSubmitting(true);
     console.log('Login attempt:', formData);
-    // Handle login logic here
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      // Handle login logic here
+    }, 1000);
   };
 
   return (
@@ -50,10 +75,15 @@ function LoginPanel() {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="Enter your email"
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
+                  className={`block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors ${
+                    errors.email ? 'border-red-500' : 'border-gray-300'
+                  }`}
                   required
                 />
               </div>
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+              )}
             </div>
 
             <div>
@@ -70,7 +100,9 @@ function LoginPanel() {
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder="Enter your password"
-                  className="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors"
+                  className={`block w-full pl-10 pr-10 py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors ${
+                    errors.password ? 'border-red-500' : 'border-gray-300'
+                  }`}
                   required
                 />
                 <button
@@ -85,6 +117,9 @@ function LoginPanel() {
                   )}
                 </button>
               </div>
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+              )}
             </div>
 
             <div className="flex items-center justify-between">
@@ -109,9 +144,10 @@ function LoginPanel() {
 
             <button
               type="submit"
-              className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-green-700 transition-colors"
+              disabled={isSubmitting}
+              className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Login
+              {isSubmitting ? 'Signing In...' : 'Login'}
             </button>
           </form>
 

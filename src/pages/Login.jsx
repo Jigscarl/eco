@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Leaf, Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { validateLoginForm } from '../utils/validation';
 
 function Login({ onBack, onLogin, onGoToRegister }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -7,6 +8,8 @@ function Login({ onBack, onLogin, onGoToRegister }) {
     email: '',
     password: ''
   });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -14,13 +17,34 @@ function Login({ onBack, onLogin, onGoToRegister }) {
       ...prev,
       [name]: value
     }));
+    
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
+    const validation = validateLoginForm(formData);
+    
+    if (!validation.isValid) {
+      setErrors(validation.errors);
+      return;
+    }
+    
+    setIsSubmitting(true);
     console.log('Login attempt:', formData);
-    onLogin();
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      onLogin();
+    }, 1000);
   };
 
   return (
@@ -64,9 +88,14 @@ function Login({ onBack, onLogin, onGoToRegister }) {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="Enter your email"
-                  className="block w-full pl-10 pr-3 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors text-sm sm:text-base"
+                  className={`block w-full pl-10 pr-3 py-2 sm:py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors text-sm sm:text-base ${
+                    errors.email ? 'border-red-500' : 'border-gray-300'
+                  }`}
                   required
                 />
+                {errors.email && (
+                  <p className="mt-2 text-sm text-red-600">{errors.email}</p>
+                )}
               </div>
             </div>
 
@@ -84,7 +113,9 @@ function Login({ onBack, onLogin, onGoToRegister }) {
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder="Enter your password"
-                  className="block w-full pl-10 pr-10 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors text-sm sm:text-base"
+                  className={`block w-full pl-10 pr-10 py-2 sm:py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors text-sm sm:text-base ${
+                    errors.password ? 'border-red-500' : 'border-gray-300'
+                  }`}
                   required
                 />
                 <button
@@ -98,6 +129,9 @@ function Login({ onBack, onLogin, onGoToRegister }) {
                     <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
                   )}
                 </button>
+                {errors.password && (
+                  <p className="mt-2 text-sm text-red-600">{errors.password}</p>
+                )}
               </div>
             </div>
 
@@ -123,9 +157,10 @@ function Login({ onBack, onLogin, onGoToRegister }) {
 
             <button
               type="submit"
-              className="w-full bg-green-600 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:bg-green-700 transition-colors text-sm sm:text-base"
+              disabled={isSubmitting}
+              className="w-full bg-green-600 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:bg-green-700 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Login
+              {isSubmitting ? 'Signing In...' : 'Login'}
             </button>
           </form>
 

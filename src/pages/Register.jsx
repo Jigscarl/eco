@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Leaf, Mail, Lock, Eye, EyeOff, User, ArrowLeft } from 'lucide-react';
+import { validateRegistrationForm } from '../utils/validation';
 
 function Register({ onBack, onRegistrationSuccess }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,6 +12,8 @@ function Register({ onBack, onRegistrationSuccess }) {
     password: '',
     confirmPassword: ''
   });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -18,20 +21,35 @@ function Register({ onBack, onRegistrationSuccess }) {
       ...prev,
       [name]: value
     }));
+    
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match');
+    const validation = validateRegistrationForm(formData);
+    
+    if (!validation.isValid) {
+      setErrors(validation.errors);
       return;
     }
     
+    setIsSubmitting(true);
     console.log('Registration attempt:', formData);
-    // Show success message and redirect to login
-    alert('Registration successful! Please login with your credentials.');
-    onRegistrationSuccess();
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      alert('Registration successful! Please login with your credentials.');
+      onRegistrationSuccess();
+    }, 1000);
   };
 
   return (
@@ -76,9 +94,14 @@ function Register({ onBack, onRegistrationSuccess }) {
                     value={formData.firstName}
                     onChange={handleInputChange}
                     placeholder="Enter your first name"
-                    className="block w-full pl-10 pr-3 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors text-sm sm:text-base"
+                    className={`block w-full pl-10 pr-3 py-2 sm:py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors text-sm sm:text-base ${
+                      errors.firstName ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     required
                   />
+                  {errors.firstName && (
+                    <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+                  )}
                 </div>
               </div>
               <div>
@@ -95,9 +118,14 @@ function Register({ onBack, onRegistrationSuccess }) {
                     value={formData.lastName}
                     onChange={handleInputChange}
                     placeholder="Enter your last name"
-                    className="block w-full pl-10 pr-3 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors text-sm sm:text-base"
+                    className={`block w-full pl-10 pr-3 py-2 sm:py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors text-sm sm:text-base ${
+                      errors.lastName ? 'border-red-500' : 'border-gray-300'
+                    }`}
                     required
                   />
+                  {errors.lastName && (
+                    <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -116,9 +144,14 @@ function Register({ onBack, onRegistrationSuccess }) {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="Enter your email"
-                  className="block w-full pl-10 pr-3 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors text-sm sm:text-base"
+                  className={`block w-full pl-10 pr-3 py-2 sm:py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors text-sm sm:text-base ${
+                    errors.email ? 'border-red-500' : 'border-gray-300'
+                  }`}
                   required
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                )}
               </div>
             </div>
 
@@ -136,7 +169,9 @@ function Register({ onBack, onRegistrationSuccess }) {
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder="Create a password"
-                  className="block w-full pl-10 pr-10 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors text-sm sm:text-base"
+                  className={`block w-full pl-10 pr-10 py-2 sm:py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors text-sm sm:text-base ${
+                    errors.password ? 'border-red-500' : 'border-gray-300'
+                  }`}
                   required
                 />
                 <button
@@ -150,6 +185,9 @@ function Register({ onBack, onRegistrationSuccess }) {
                     <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
                   )}
                 </button>
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                )}
               </div>
             </div>
 
@@ -167,7 +205,9 @@ function Register({ onBack, onRegistrationSuccess }) {
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
                   placeholder="Confirm your password"
-                  className="block w-full pl-10 pr-10 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors text-sm sm:text-base"
+                  className={`block w-full pl-10 pr-10 py-2 sm:py-3 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors text-sm sm:text-base ${
+                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
+                  }`}
                   required
                 />
                 <button
@@ -181,6 +221,9 @@ function Register({ onBack, onRegistrationSuccess }) {
                     <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
                   )}
                 </button>
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>
+                )}
               </div>
             </div>
 
@@ -202,9 +245,10 @@ function Register({ onBack, onRegistrationSuccess }) {
 
             <button
               type="submit"
-              className="w-full bg-green-600 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:bg-green-700 transition-colors text-sm sm:text-base"
+              disabled={isSubmitting}
+              className="w-full bg-green-600 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-medium hover:bg-green-700 transition-colors text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Register
+              {isSubmitting ? 'Registering...' : 'Register'}
             </button>
           </form>
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Building, MapPin, Users, Save, Edit2, X } from 'lucide-react';
+import { validateCompanyProfileForm } from '../utils/validation';
 
 function CompanyProfile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -16,6 +17,8 @@ function CompanyProfile() {
   });
 
   const [formData, setFormData] = useState({ ...companyData });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const industryTypes = [
     'Retail', 'Manufacturing', 'Technology', 'Healthcare', 'Education',
@@ -29,16 +32,39 @@ function CompanyProfile() {
       ...prev,
       [name]: value
     }));
+    
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
   };
 
   const handleSave = () => {
-    setCompanyData({ ...formData });
-    setIsEditing(false);
-    console.log('Company profile updated:', formData);
+    const validation = validateCompanyProfileForm(formData);
+    
+    if (!validation.isValid) {
+      setErrors(validation.errors);
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setCompanyData({ ...formData });
+      setIsEditing(false);
+      console.log('Company profile updated:', formData);
+      alert('Company profile updated successfully!');
+    }, 1000);
   };
 
   const handleCancel = () => {
     setFormData({ ...companyData });
+    setErrors({});
     setIsEditing(false);
   };
 
@@ -68,10 +94,11 @@ function CompanyProfile() {
             </button>
             <button
               onClick={handleSave}
-              className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+              disabled={isSubmitting}
+              className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Save className="w-4 h-4" />
-              <span>Save Changes</span>
+              <span>{isSubmitting ? 'Saving...' : 'Save Changes'}</span>
             </button>
           </div>
         )}
