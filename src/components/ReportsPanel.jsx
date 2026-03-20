@@ -22,7 +22,7 @@ function ReportsPanel({ checkPremiumAccess, userSubscription }) {
 
       <div className="bg-white rounded-xl shadow-sm p-6">
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800">Report for April 202X</h2>
+          <h2 className="text-xl font-semibold text-gray-800">Report for April 2026</h2>
         </div>
 
         <div className="bg-linear-to-r from-green-400 to-green-600 rounded-xl p-6 text-white relative overflow-hidden mb-6">
@@ -31,7 +31,7 @@ function ReportsPanel({ checkPremiumAccess, userSubscription }) {
               <div>
                 <h3 className="text-2xl font-bold mb-2">Total Emissions: 320.4 kg CO₂</h3>
                 <div className="flex items-center space-x-2">
-                  <span className="bg-white bg-opacity-20 px-3 py-1 rounded-full text-sm font-medium">
+                  <span className="bg-white text-gray-800 bg-opacity-20 px-3 py-1 rounded-full text-sm font-medium">
                     Green Score: B
                   </span>
                 </div>
